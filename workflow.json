@@ -1,0 +1,467 @@
+{
+  "name": "Yapay Zeka Davranışsal Satış Ajanı",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "sinyal",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "2648a850-ffb4-4cae-8879-0929c98ac252",
+      "name": "Data Ingest",
+      "webhookId": "6d74d383-521d-4428-bb88-6048e712e4e9"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M",
+          "mode": "list",
+          "cachedResultName": "Müşteri Sinyalleri",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sayfa1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "user_id": "={{ $json.body.user_id }}",
+            "event_type": "={{ $json.body.event_type }}",
+            "ad_soyad": "={{ $json.body.ad_soyad }}",
+            "product_name": "={{ $json.body.product_name }}",
+            "fiyat": "={{ $json.body.fiyat }}",
+            "timestamp": "={{ $json.body.timestamp }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "user_id",
+              "displayName": "user_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ad_soyad",
+              "displayName": "ad_soyad",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "event_type",
+              "displayName": "event_type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "product_name",
+              "displayName": "product_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fiyat",
+              "displayName": "fiyat",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        208,
+        0
+      ],
+      "id": "eb323d3b-f530-42a0-b9f7-6ef1cceacb8c",
+      "name": "DB: Save Signal",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qcwiYX4ZZdYsGZYA",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M",
+          "mode": "list",
+          "cachedResultName": "Müşteri Sinyalleri",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sayfa1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18aTcrBP0j5Y4tf9k-Y8K15kPz8L9cSENb4qTqV-Y5_M/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "user_id",
+              "lookupValue": "={{ $json.user_id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        416,
+        0
+      ],
+      "id": "46f20029-e92d-4e3d-aeba-d6d8946303b7",
+      "name": "DB: Fetch History",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "qcwiYX4ZZdYsGZYA",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=Sen uzman bir e-ticaret analistisin. Aşağıdaki müşterinin son hareketlerine bakarak, önümüzdeki 24 saat içinde satın alma yapma ihtimalini 1 ile 10 arasında puanla.\n\nMüşteri Adı: {{ $json.ad_soyad }}\nGeçmiş Hareketler:\n{{ $json.gecmis_ozeti }}\n\nGÖREV:\nSadece ve sadece aşağıdaki JSON formatında yanıt ver. Başka hiçbir açıklama yazma.\n\n{\n  \"purchase_intent_score\": 8,\n  \"reason\": \"Kısa süre içinde aynı ürüne 3 kez bakmış ve sepete atmış.\"\n}"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.1,
+      "position": [
+        608,
+        0
+      ],
+      "id": "1bf0c729-fa6d-4ee5-8f45-02cb11b9e8cf",
+      "name": "AI Brain (GPT-4o)",
+      "credentials": {
+        "openAiApi": {
+          "id": "8G9HHRMyQLpATcg9",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. AI'dan gelen cevabı al\nconst aiOutput = items[0].json.output ? items[0].json.output[0] : items[0].json;\nconst gelenCevap = aiOutput.content ? aiOutput.content[0].text : aiOutput.text;\n\n// 2. Temizlik\nconst temizCevap = gelenCevap.replace(/```json|```/g, '').trim();\nconst sonuc = JSON.parse(temizCevap);\nsonuc.purchase_intent_score = Number(sonuc.purchase_intent_score);\n\n// 3. 🔥 DÜZELTME: user_id ve diğer bilgileri Webhook'tan çekiyoruz\ntry {\n   const webhookVerisi = $('Data Ingest').first().json.body;\n   \n   // EKSİK OLAN SATIR BUYDU:\n   sonuc.user_id = webhookVerisi.user_id; \n\n   // İletişim tercihi kontrolü (Yoksa varsayılan 'telegram' olsun)\n   sonuc.iletisim_tercihi = webhookVerisi.iletisim_tercihi ? webhookVerisi.iletisim_tercihi.toLowerCase() : \"telegram\";\n   sonuc.ad_soyad = webhookVerisi.ad_soyad;\n   sonuc.product_name = webhookVerisi.product_name; // Ürün adını da ekleyelim\n   \n} catch (hata) {\n   sonuc.iletisim_tercihi = \"telegram\";\n   sonuc.hata_notu = \"Webhook verisi eksik.\";\n}\n\nreturn { json: sonuc };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        928,
+        0
+      ],
+      "id": "856ac03e-1328-417f-ba73-d2becd277424",
+      "name": "Parser: Clean & Prep"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "0a643c58-064b-4fa4-9edb-ab2252bf799e",
+              "leftValue": "={{ $json.purchase_intent_score }}",
+              "rightValue": 7,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1104,
+        0
+      ],
+      "id": "906beb4b-398c-4c45-bdf7-074aabdab987",
+      "name": "Decision: Is Hot Lead?"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.iletisim_tercihi }}",
+                    "rightValue": "telegram",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "265ae58d-19ac-467f-8cc0-48de2f77ec13"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "5b6c0c98-c7d5-4a69-9f97-1a00adba4d87",
+                    "leftValue": "={{ $json.iletisim_tercihi }}",
+                    "rightValue": "email",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        1296,
+        0
+      ],
+      "id": "4d6982a0-0761-4638-ac2e-2def4347fe76",
+      "name": "Router: Channel Select"
+    },
+    {
+      "parameters": {
+        "chatId": "479149859",
+        "text": "=🚨 YENİ SATIŞ FIRSATI!\n\n👤 Müşteri: {{ $json.ad_soyad }}\n🆔 ID: {{ $json.user_id }}\n📊 Skor: {{ $json.purchase_intent_score }}\n💬 Tercih: {{ $json.iletisim_tercihi }}\n\n🤖 AI Yorumu: {{ $json.reason }}\n\n✅ Durum: Müşteri \"Telegram\" tercih ettiği için bu bildirim size düştü. İndirim kuponunu manuel göndermelisiniz.",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1488,
+        -96
+      ],
+      "id": "b0227d2f-d4ba-4a65-8f38-e10b3f153761",
+      "name": "Channel: Telegram",
+      "webhookId": "26e3ccd0-a1f4-4d1d-b0a1-c9efb145b901",
+      "credentials": {
+        "telegramApi": {
+          "id": "JwfbCnmBc6uhhA9p",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "emrahdemirkoc@gmail.com",
+        "subject": "=Fırsat: {{ $json.product_name }} Ürününde İndirim!",
+        "message": "={{ $json.reason }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1488,
+        64
+      ],
+      "id": "9613f720-4f67-4ba1-bcc4-437f2496d3b3",
+      "name": "Channel: Email",
+      "webhookId": "4c8d0362-d52c-4372-a7f3-a319af7a0778",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "8a5euHXrBEO76MFi",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Data Ingest": {
+      "main": [
+        [
+          {
+            "node": "DB: Save Signal",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB: Save Signal": {
+      "main": [
+        [
+          {
+            "node": "DB: Fetch History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DB: Fetch History": {
+      "main": [
+        [
+          {
+            "node": "AI Brain (GPT-4o)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Brain (GPT-4o)": {
+      "main": [
+        [
+          {
+            "node": "Parser: Clean & Prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser: Clean & Prep": {
+      "main": [
+        [
+          {
+            "node": "Decision: Is Hot Lead?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision: Is Hot Lead?": {
+      "main": [
+        [
+          {
+            "node": "Router: Channel Select",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Router: Channel Select",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Router: Channel Select": {
+      "main": [
+        [
+          {
+            "node": "Channel: Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Channel: Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Channel: Telegram": {
+      "main": [
+        []
+      ]
+    },
+    "Channel: Email": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "availableInMCP": false
+  },
+  "versionId": "7253e54d-53b8-4700-aa2c-37e72a04751e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "a2e52c777bc2ceaba0402a3b3768c056f8e30c3434809d4df0853e039bf670b5"
+  },
+  "id": "IH9jfA59uGAEFS_h_v71R",
+  "tags": []
+}
